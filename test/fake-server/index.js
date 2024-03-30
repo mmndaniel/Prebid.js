@@ -33,6 +33,28 @@ app.post('/appnexus', fakeResponder, (req, res) => {
   res.send();
 });
 
+app.get('/testbid', (req, res) => {
+  const bidRequests = JSON.parse(req.query.bids);
+  const bidResponses = bidRequests.map(function (bidRequest) {
+    return {
+      requestId: bidRequest.bidId,
+      cpm: 10,
+      currency: 'USD',
+      width: bidRequest.sizes[0][0],
+      height: bidRequest.sizes[0][1],
+      creativeId: 123456789,
+      netRevenue: true,
+      ttl: 500,
+      ad: '<h1>tet ad</h1>',
+      mediaType: 'banner',
+      meta: {
+          advertiserDomains: ['https://example.com']
+      }
+    };
+  });
+  res.send(bidResponses);
+});
+
 app.use((req, res) => {
   res.status(404).send('Not Found');
 });
